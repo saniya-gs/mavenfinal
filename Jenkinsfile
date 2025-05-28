@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   tools {
-    maven 'Maven'
+    maven 'Maven'  // Must match the name configured in Jenkins
   }
 
   stages {
@@ -20,15 +20,23 @@ pipeline {
 
     stage('Test') {
       steps {
-         sh 'mvn test'
+        sh 'mvn test'
       }
     }
 
     stage('Run Application') {
       steps {
-        sh 'java -jar target/MavenApp-1.0-SNAPSHOT.jar'
+        sh 'java -jar target/*.jar'
       }
     }
   }
+
+  post {
+    success {
+      echo 'Pipeline completed successfully!'
+    }
+    failure {
+      echo 'Pipeline failed!'
+    }
+  }
 }
-      
